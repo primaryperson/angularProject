@@ -1,0 +1,17 @@
+
+mutation signIn(
+    $token: String!,
+    $socialName: SocialMediaEnum!,
+    $email: String,
+    $secret: String
+) {
+    signIn(
+        token: $token,
+        socialName: $socialName,
+        email: $email,
+        secret: $secret
+    ) {
+        token
+        refreshToken
+    }
+}
