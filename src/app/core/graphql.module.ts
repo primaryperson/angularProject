@@ -3,7 +3,7 @@ import {ApolloModule, APOLLO_OPTIONS} from 'apollo-angular';
 import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 
-const uri = 'https://api.fromscratch.space/api/v1';
+const uri = 'http://localhost:3000';
 export function createApollo(httpLink: HttpLink) {
   return {
     link: httpLink.create({uri}),

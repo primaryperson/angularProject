@@ -9,6 +9,7 @@ import { SocialMediaName } from 'app/store/user/types';
 import { StateUser } from 'app/store/user/user.reducer';
 import { Observable } from 'rxjs';
 import { scan, map } from 'rxjs/operators';
+import { TokenData } from '../graphql/types';
 
 
 @Component({
@@ -17,47 +18,25 @@ import { scan, map } from 'rxjs/operators';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit, AfterViewInit {
-    user$: Observable<string>;
+    user$: Observable<StateUser>;
 
     constructor(
         private store: Store<State>,
         private loginWithFacebookService: LoginWithFacebookService,
         private userService: UserService
     ) {
-        this.user$ = this.store.pipe(
-            select('user'),
-            map(({ user }) => {
-                if (user) {
-                    return String(user.id);
-                }
-                return '';
-            })
-        );
+        this.user$ = this.store.select('user');
     }
 
     ngOnInit(): void {
     }
 
     async authWithFacebook() {
-        // console.log(this.user$.);
         this.loginWithFacebookService.auth().then(({ authResponse }) => {
             this.store.dispatch(attemptAuth({
                 socialName: SocialMediaName.FACEBOOK,
                 socialAccessToken: authResponse.accessToken
             }));
-        //     this.userService.attemptAuth(
-        //         SocialMediaName.FACEBOOK,
-        //         authResponse.accessToken
-        //     ).subscribe(({ data }) => {
-        //         console.log(data.signIn.token);
-        //     });
-        // // console.log(authResponse);
-        // // this.signIn.mutate({
-        // //   token: authResponse.accessToken,
-        // //   socialName: 'FACEBOOK'
-        // // }).subscribe(({ data }) => {
-        // //   console.log(data.signIn.token);
-        // // });
         });
     }
 
